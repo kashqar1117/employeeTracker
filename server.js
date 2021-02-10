@@ -168,13 +168,14 @@ const viewDepartment = () =>{
 
 
 const updateRole = () =>{
-    console.table(res)
-
+    
     connection.query("SELECT * FROM role" , (err , res) =>{
         if (err) throw err;
-            inquirer.prompt([{
-                name:"new", 
+        console.table(res)
+        inquirer.prompt([{
+                name:"currentRole", 
                 type:"list", 
+                message:"choose a new role",
                 choices:res.map(role  =>({
                     name: role.title,
                     value: role.id
@@ -182,21 +183,22 @@ const updateRole = () =>{
                 
             }, 
            { 
-            name:"person", 
+            name:"newRole", 
             type:"input", 
-            message:"Who is being promted?"
+            message:"What is the change in role?"
         }
         ]).then(answer =>{
-        connection.query("UPDATE employee SET role_id=? WHERE firstName = ?", [answer.new  , answer.person], (err, res)=>{
+        connection.query("UPDATE employee SET role_id=? WHERE firstName = ?", [answer.currentRole  , answer.newRole], (err, res)=>{
             console.log(res)
         
         
             if (err) throw err;
+
             viewEmployee()
             runSearch()
         })
         })
-        runSearch()
+  
 
  }   
  )
